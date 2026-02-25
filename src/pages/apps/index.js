@@ -98,14 +98,6 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
               ]}
         />
       </div>
-      
-      {/* Curated Apps Carousel */}
-      <CardCarouselGeneric
-        cards={curatedApps}
-        renderCard={renderCuratedAppCard}
-        cardsPerView={1}
-      />
-
       </section>
 
       {/* Stats */}
@@ -123,6 +115,15 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
         {/* Link to tethys.ciroh.org */}
         <div className="tw-flex tw-w-full tw-h-full tw-pt-10 tw-justify-center tw-items-center tw-bg-white dark:tw-bg-[#060010]">
             <h2 className="tw-flex">Explore real-world Tethys apps built by the CIROH community at the <a href="https://tethys.ciroh.org/apps/">CIROH Tethys Portal</a></h2>
+        </div>
+
+        {/* Curated Apps Carousel */}
+        <div style={{ backgroundColor: '#060010' }}>
+          <CardCarouselGeneric
+            cards={curatedApps}
+            renderCard={renderCuratedAppCard}
+            cardsPerView={1}
+          />
         </div>
 
         <HydroShareResourcesSelector
