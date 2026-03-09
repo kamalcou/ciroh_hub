@@ -1,4 +1,4 @@
-name: PR Preview with Codespaces
+name: 'CI: Validate PR'
 
 on:
   pull_request:

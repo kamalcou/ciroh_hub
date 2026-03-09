@@ -1,15 +1,20 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-# Will soon be renamed to cd_deploy_legacy.yml.
-
-name: 'CD: Deploy build artifact to GitHub Pages (legacy)'
+name: 'CD: Deploy build artifact to composite target'
 
 on:
   repository_dispatch:
     types: [build-completed]
   workflow_dispatch:  # For manual triggering if needed
-  
+
+env:
+  PROD_REPO: ${{ vars.COMPOSITE_TARGET_REPO }}
+  PROD_PATH: .
+  STAGING_REPO: ${{ vars.COMPOSITE_TARGET_REPO }}
+  STAGING_PATH: staging/
+  STAGING_MAIN_FOLDER: main/ # Future-proofing for PR staging
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,13 +32,14 @@ jobs:
           ref: refs/heads/main
 
       # Get environment and version from dispatch payload
-      - name: Set environment from dispatch
+      - name: Echo environment from dispatch
         run: |
+          echo "DEPLOY_ENV=${{ github.event.client_payload.env }}" >> $GITHUB_ENV
+          echo "VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
+
           echo "Deploying commit ${{ github.event.client_payload.commit_hash }}"
           echo "Commit message: ${{ github.event.client_payload.commit_message }}"
           echo "Branch: ${{ github.event.client_payload.branch }}"
-          echo "DEPLOY_ENV=${{ github.event.client_payload.env }}" >> $GITHUB_ENV
-          echo "VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
           echo "Deploying version: ${{ github.event.client_payload.version }}"
           echo "Environment: ${{ github.event.client_payload.env }}"
           
@@ -51,66 +57,43 @@ jobs:
           if [[ "$DEPLOY_ENV" == "production" ]]; then
             echo "ENVIRONMENT=production" >> $GITHUB_ENV
             echo "environment=production" >> $GITHUB_OUTPUT
-            echo "Deploying to PRODUCTION environment (current repo)"
+            echo "TARGET_REPO=$PROD_REPO" >> $GITHUB_ENV
+            echo "TARGET_PATH=$PROD_PATH" >> $GITHUB_ENV
+            echo "Deploying to $TARGET_REPO as PRODUCTION at path $TARGET_PATH"
           else
             echo "ENVIRONMENT=staging" >> $GITHUB_ENV
             echo "environment=staging" >> $GITHUB_OUTPUT
-            echo "TARGET_REPO=CIROH-UA/ciroh_hub_staging" >> $GITHUB_ENV
-            echo "Deploying to STAGING environment"
+            echo "TARGET_REPO=${{ env.STAGING_REPO }}" >> $GITHUB_ENV
+            echo "TARGET_PATH=${{ env.STAGING_PATH }}${{ env.STAGING_MAIN_FOLDER }}'" >> GITHUB_ENV
+            echo "Deploying to $STAGING_REPO as STAGING at path $STAGING_PATH$STAGING_MAIN_FOLDER"
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      # Staging: Deploy to target repo (keep existing behavior)
-      - name: GitHub Pages deployment to staging
-        uses: JamesIves/github-pages-deploy-action@v4.6.1
-        if: ${{ env.ENVIRONMENT == 'staging' }}
-        with:
-          token: ${{ secrets.GH_STAGING_TOKEN }}
-          branch: main
-          folder: build
-          repository-name: ${{ env.TARGET_REPO }}
+      - name: Deployment preview
+        run: |
+          echo "Deploying to $TARGET_REPO as $ENVIRONMENT at path $TARGET_PATH"
 
-      # Production: Upload pages artifact for deployment in current repo
-      - name: Upload pages artifact for production
-        if: ${{ env.ENVIRONMENT == 'production' }}
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to composite repository
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: build
+          folder: "./build/"
+          ssh-key: ${{ secrets.SSH_DEPLOY_HUB_SUBDOMAIN }}
+          repository-name: ${{ env.TARGET_REPO }}
+          target-folder: ${{ env.TARGET_PATH }}
+          clean: $ENVIRONMENT == 'production' # Set to false if deploying to a composite repository's root!
 
       - name: Post-deployment notification
         run: |
           if [[ "${{ env.ENVIRONMENT }}" == "production" ]]; then
             echo "### Production build artifact uploaded! 🚀" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Production build artifact uploaded. Deployment to GitHub Pages will complete in the next job." >> $GITHUB_STEP_SUMMARY
           else
-            echo "Staging deployment completed successfully!"
-            echo "To deploy to production, manually trigger the 'CI: Trigger staging deployment from main' workflow."
+            echo "Staging build artifact uploaded! 🚀"
+            echo "To deploy to production, manually trigger the 'CI: Trigger staging deployment from main' workflow." >> $GITHUB_STEP_SUMMARY
           fi
-
-  deploy-production:
-    name: Deploy Production to GitHub Pages
-    needs: deploy
-    if: needs.deploy.outputs.environment == 'production'
-    runs-on: ubuntu-latest
-    
-    permissions:
-      pages: write
-      id-token: write
-    
-    environment:
-      name: production
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Deployment Summary
-        run: |
-          echo "### Production Deployment Complete! 🚀" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Environment**: Production" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: $ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
           echo "- **Version**: ${{ needs.deploy.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **URL**: ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deploy Target**: $TARGET_REPO -> $TARGET_PATH" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL (once live)**: https://hub.ciroh.org/$BASE_URL" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Deployment to GitHub Pages will be completed by the composite target repository, $TARGET_REPO." >> $GITHUB_STEP_SUMMARY

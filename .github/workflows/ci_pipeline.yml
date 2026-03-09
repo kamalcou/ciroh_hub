@@ -1,26 +1,14 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: ciroh-ua-website-ci
+# Will soon be renamed to cd_build_artifact.yml.
+# Trigger logic has been spun out into the various 'ci_trigger_*.yml' workflows.
+
+name: 'CI: Create Build Artifact'
 
 on:
-  push:
-    branches:
-     - main
-     - test-deploy
-  workflow_call:
-    # Map the workflow outputs to job outputs
-    # https://docs.github.com/en/github-ae@latest/actions/using-workflows/reusing-workflows
-  workflow_dispatch:
-    inputs:
-      deploy_env:
-        description: 'Deployment environment'
-        required: false
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
+  repository_dispatch:
+    types: [create-build]
       
 jobs:
   build:
@@ -31,6 +19,19 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
   
     steps:
+    - name: Extract payload inputs
+      run: |
+        echo "DEPLOY_ENV = ${{ github.event.client_payload.deploy_env }}" >> $GITHUB_ENV
+        echo "BASE_URL = ${{ vars.BASE_URL_PREFIX }}${{ github.event.client_payload.base_url }}" >> $GITHUB_ENV
+      # BASE_URL_PREFIX is purely to allow testing on forks; it should be left empty on the main branch
+    
+    - name: Validate payload inputs
+      run: |
+        if ![["$DEPLOY_ENV" = "production"] || ["$DEPLOY_ENV" = "staging"]]; then
+          echo "Invalid DEPLOY_ENV value. Expected 'production' or 'staging'; recieved '$DEPLOY_ENV'. "
+          exit 1
+        fi
+
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -56,51 +57,33 @@ jobs:
     # a fresh lock file.
     # See also: https://github.com/npm/cli/issues/4828
 
-    # Determine if this is a production build (manual trigger only)
+    # Determine if this is a production build
     - name: Determine build type and version
       id: build-info
       run: |
+        echo "VERSION=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        
         if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.deploy_env }}" == "production" ]]; then
           VERSION=$(date +'%Y%m%d-%H%M%S')
           echo "DEPLOY_ENV=production" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Building for PRODUCTION environment (manual trigger)"
+          echo "Building for PRODUCTION environment"
         else
-          VERSION=$(date +'%Y%m%d-%H%M%S')
           echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Building for STAGING environment"
         fi
-          
-    - name: Configure baseUrl (staging)
-      if: ${{ env.DEPLOY_ENV == 'staging' }}
+
+    - name: Configure baseUrl
+      if: ${{ env.DEPLOY_ENV == 'staging' && env.deploy_env == 'staging-composite' }}
       run: |
         # Create a backup of the original config
         cp docusaurus.config.js docusaurus.config.js.bak
         
         # Use sed to replace the baseUrl value
-        echo "Setting baseUrl for staging"
-        sed -i 's|baseUrl: '\''\/local\/'\''|baseUrl: '\''/ciroh_hub_staging/'\''|g' docusaurus.config.js
-        sed -i 's|baseUrl: "\/local\/"|baseUrl: "\/ciroh_hub_staging\/"|g' docusaurus.config.js
-        sed -i 's|baseUrl = '\''\/local\/'\''|baseUrl = '\''/ciroh_hub_staging/'\''|g' docusaurus.config.js
-        sed -i 's|baseUrl = "\/local\/"|baseUrl = "\/ciroh_hub_staging\/"|g' docusaurus.config.js
-        
-        # Show the changed config
-        echo "Modified docusaurus.config.js:"
-        cat docusaurus.config.js
-    
-    - name: Configure baseUrl (production)
-      if: ${{ env.DEPLOY_ENV == 'production' }}
-      run: |
-        # Create a backup of the original config
-        cp docusaurus.config.js docusaurus.config.js.bak
-        
-        # Use sed to replace the baseUrl value
-        echo "Setting baseUrl for production"
-        sed -i 's|baseUrl: '\''\/local\/'\''|baseUrl: '\''/'\''|g' docusaurus.config.js
-        sed -i 's|baseUrl: "\/local\/"|baseUrl: "\/"|g' docusaurus.config.js
-        sed -i 's|baseUrl = '\''\/local\/'\''|baseUrl = '\''/'\''|g' docusaurus.config.js
-        sed -i 's|baseUrl = "\/local\/"|baseUrl = "\/"|g' docusaurus.config.js
+        echo "Setting baseUrl to path '$BASE_URL'"
+        sed -i 's|baseUrl: '\''\/local\/'\''|baseUrl: '\''$BASE_URL'\''|g' docusaurus.config.js
+        sed -i 's|baseUrl: "\/local\/"|baseUrl: '\''$BASE_URL'\''|g' docusaurus.config.js
+        sed -i 's|baseUrl = '\''\/local\/'\''|baseUrl = '\''$BASE_URL'\''|g' docusaurus.config.js
+        sed -i 's|baseUrl = "\/local\/"|baseUrl = '\''$BASE_URL'\''|g' docusaurus.config.js
         
         # Show the changed config
         echo "Modified docusaurus.config.js:"
@@ -141,7 +124,7 @@ jobs:
           draft: false
           prerelease: false
 
-   # Get short SHA first
+    # Get short SHA first
     - name: Get short SHA
       id: short-sha
       run: echo "SHORT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
