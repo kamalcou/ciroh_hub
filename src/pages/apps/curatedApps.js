@@ -7,7 +7,8 @@
         thumbnail_url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
         images: [
             'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80'
-        ]
+        ],
+        images_additional: []   // This field is optional and will be appended to the existing images array if it exists
     }
 */
 
