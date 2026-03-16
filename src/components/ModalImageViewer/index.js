@@ -177,14 +177,14 @@ export default function ModalImageViewer({ open, onClose, title, images }) {
                 <h2 className="tw-text-lg tw-font-bold tw-self-center tw-mb-0 tw-text-cyan-700 dark:tw-text-cyan-300">{title}</h2>
 
                 {/* Selected Image Container */}
-                <div className="tw-flex tw-flex-col tw-flex-1 tw-w-full tw-h-4/5 tw-items-center tw-justify-center tw-gap-4">
+                <div className="tw-flex tw-flex-col tw-flex-1 tw-min-h-0 tw-w-full tw-h-4/5 tw-items-center tw-justify-center tw-gap-4">
                     { images[selectedImageIndex] ? (
-                        <div className="tw-relative tw-w-full tw-h-full">
+                        <div className="tw-relative tw-w-full tw-h-full tw-min-h-0">
                             {/* Selected Image */}
                             <img
                                 src={images[selectedImageIndex]}
                                 alt="Selected"
-                                className="tw-w-full tw-h-full tw-object-contain tw-rounded"
+                                className="tw-w-full tw-h-full tw-max-h-full tw-min-h-0 tw-object-contain tw-rounded"
                                 onLoad={() => {
                                     const loader = document.getElementById('selected-image-loader');
                                     if (loader) loader.style.display = 'none';
@@ -203,67 +203,70 @@ export default function ModalImageViewer({ open, onClose, title, images }) {
                 </div>
 
                 {/* Thumbnail Images Row */}
-                <div className="tw-flex tw-flex-row tw-justify-center tw-gap-2 tw-relative">
+                <div className="tw-flex tw-overflow-x-auto tw-overflow-y-hidden">
+                    {/* Inner container for centering */}
+                    <div className="tw-flex tw-flex-row tw-gap-2 tw-relative tw-mx-auto">
 
-                    {/* Image Selected Indicator */}
-                    <div
-                        id='selected-image-indicator'
-                        className={
-                            `tw-absolute pointer-events-none tw-border-solid tw-border-8 tw-border-blue-700 dark:tw-border-white tw-rounded-lg` +
-                            (enableTransition ? ' tw-transition-all tw-duration-300 tw-ease-in-out' : '') +
-                            (imagesLoadedCount === images.length && images.length > 0 ? '' : ' tw-invisible')
-                        }
-                        style={{
-                            left: indicatorRect.left,
-                            top: indicatorRect.top,
-                            width: indicatorRect.width,
-                            height: indicatorRect.height,
-                            zIndex: 1,
-                        }}
-                    />
+                        {/* Image Selected Indicator */}
+                        <div
+                            id='selected-image-indicator'
+                            className={
+                                `tw-absolute pointer-events-none tw-border-solid tw-border-8 tw-border-blue-700 dark:tw-border-white tw-rounded-lg` +
+                                (enableTransition ? ' tw-transition-all tw-duration-300 tw-ease-in-out' : '') +
+                                (imagesLoadedCount === images.length && images.length > 0 ? '' : ' tw-invisible')
+                            }
+                            style={{
+                                left: indicatorRect.left,
+                                top: indicatorRect.top,
+                                width: indicatorRect.width,
+                                height: indicatorRect.height,
+                                zIndex: 1,
+                            }}
+                        />
 
-                    {/* Thumbnail Images */}
-                    {images.map((src, idx) => (
-                        <div className="tw-relative tw-flex tw-gap-x-1 tw-min-w-32 tw-min-h-32 tw-bg-slate-300 dark:tw-bg-slate-800"
-                        key={idx}
-                        ref={el => imageRefs.current[idx] = el}
-                        onClick={() => setSelectedImageIndex(idx)}
-                        >
-                            {/* Show loading indicator until image is loaded */}
-                            {!imageLoaded[idx] && (
-                                <div id={`loading-indicator-${idx}`} className="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-slate-200/80 dark:tw-bg-slate-700/80 tw-z-10">
-                                    {/* Spinning Wheel */}
-                                    <div className="spinner-border" role="status">
-                                        <span className="visually-hidden">Loading...</span>
+                        {/* Thumbnail Images */}
+                        {images.map((src, idx) => (
+                            <div className="tw-relative tw-flex tw-items-center tw-justify-center tw-gap-x-1 tw-min-w-32 tw-bg-slate-300 dark:tw-bg-slate-800"
+                            key={idx}
+                            ref={el => imageRefs.current[idx] = el}
+                            onClick={() => setSelectedImageIndex(idx)}
+                            >
+                                {/* Show loading indicator until image is loaded */}
+                                {!imageLoaded[idx] && (
+                                    <div id={`loading-indicator-${idx}`} className="tw-absolute tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-slate-200/80 dark:tw-bg-slate-700/80 tw-z-10">
+                                        {/* Spinning Wheel */}
+                                        <div className="spinner-border" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                            
-                            {/* Thumbnail Image */}
-                            <img
-                                key={idx}
-                                src={images[idx]}
-                                alt={`Gallery ${idx}`}
-                                className="tw-flex tw-w-full tw-h-32 tw-rounded tw-object-contain"
-                                onLoad={() => {
-                                    setImageLoaded(loaded => {
-                                        const arr = [...loaded];
-                                        arr[idx] = true;
-                                        return arr;
-                                    });
-                                    setImagesLoadedCount(count => count + 1);
-                                }}
-                                onError={() => {
-                                    setImageLoaded(loaded => {
-                                        const arr = [...loaded];
-                                        arr[idx] = true;
-                                        return arr;
-                                    });
-                                    setImagesLoadedCount(count => count + 1);
-                                }}
-                            />
-                        </div>
-                    ))}
+                                )}
+                                
+                                {/* Thumbnail Image */}
+                                <img
+                                    key={idx}
+                                    src={images[idx]}
+                                    alt={`Gallery ${idx}`}
+                                    className="tw-flex tw-max-h-32 tw-h-auto tw-w-auto tw-rounded tw-object-contain"
+                                    onLoad={() => {
+                                        setImageLoaded(loaded => {
+                                            const arr = [...loaded];
+                                            arr[idx] = true;
+                                            return arr;
+                                        });
+                                        setImagesLoadedCount(count => count + 1);
+                                    }}
+                                    onError={() => {
+                                        setImageLoaded(loaded => {
+                                            const arr = [...loaded];
+                                            arr[idx] = true;
+                                            return arr;
+                                        });
+                                        setImagesLoadedCount(count => count + 1);
+                                    }}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
