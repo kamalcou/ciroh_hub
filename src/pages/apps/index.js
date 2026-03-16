@@ -148,6 +148,14 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
         }
       }
 
+      // Add images_additional to resource's images array if it exists
+      for (const resource of resourcesMapped) {
+        if (resource.images_additional) {
+          resource.images = [...(resource.images || []), ...resource.images_additional];
+          delete resource.images_additional; // Clean up the temporary field
+        }
+      }
+
       // Return resources
       return resourcesMapped;
     } catch (error) {
