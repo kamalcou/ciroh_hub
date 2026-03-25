@@ -4,6 +4,7 @@ description: "An open, cloud-based numerical prediction system enabling rapid, r
 slug: nextgen-research-datastream-april-2026
 tags: [CIROH, NextGen, NGIAB, NRDS, AWS, Hydrology, National Water Model, Open Source, Cloud Computing, DevOps, R2O, Numerical Prediction]
 authors: [jordan, arpita-2025, harsha-vemula]
+image: /img/blog/2026-03-nrds/T2D_2_TMP_2maboveground_cali.gif
 ---
 import useBaseUrl from "@docusaurus/useBaseUrl"
 
@@ -27,6 +28,10 @@ Deployed on AWS cloud from the [ngen-datastream repository](https://github.com/C
 
 This is a fundamentally new paradigm for how national-scale water prediction can work: an open, iterative, community-driven feedback loop where regional expertise flows directly into an operational-like system.
 
+<img
+  src={useBaseUrl('/img/blog/2026-03-nrds/architecture.png')}
+  alt="Overview diagram of NRDS architecture"
+/>
 
 ## How the Community Can Contribute
 
@@ -37,7 +42,6 @@ The process is intentionally straightforward. A researcher who has improved upon
 This contribution pathway was a central theme at the [2025 CIROH Developers Conference (DevCon 2025)](https://ciroh.ua.edu/devconference/2025-ciroh-developers-conference/), where a dedicated workshop walked participants through the complete process of proposing a configuration change. Attendees received access to virtual machines on NSF JetStream2 with pre-installed tooling, enabling them to run local simulations, compare results, and prepare a contribution — all within a single workshop session.
 
 The NRDS is not designed to be a product delivered by a central team. It is a platform designed to absorb and amplify the collective expertise of the hydrologic community.
-
 
 ## Multiple Datastreams Live and Scaling
 
@@ -54,7 +58,6 @@ There is also a Routing-Only DataStream for VPU 03W. This datastream focuses on 
 The NRDS is deeply interconnected with the broader suite of CIROH tools that are making NextGen modeling accessible. NextGen In A Box (NGIAB) provides the containerized runtime environment that researchers can use locally to test configurations before proposing them to the NRDS. The DataStreamCLI (now in its [own repository](https://github.com/CIROH-UA/datastreamcli)) automates the complete workflow from data preprocessing to NextGen execution. The ForcingProcessor (also [split out](https://github.com/CIROH-UA/forcingprocessor)) handles the conversion of gridded meteorological data into the catchment-averaged forcings that NextGen requires. Once the model outputs are generated, TEEHR (Tools for Exploratory Evaluation in Hydrologic Research) provides standardized evaluation capabilities for comparing model outputs against observations (dashboard available [here](https://dashboards.teehr.rtiamanzi.org/forecast)).
 
 Together, these tools form a coherent pipeline: prepare data with the ForcingProcessor and DataStreamCLI, run simulations locally with NGIAB, evaluate results with TEEHR, and — if improvements are found — contribute them back to the NRDS for operational deployment. 
-
 
 ## What's Next
 
@@ -99,10 +102,8 @@ Here's how to get started:
   <figcaption><em>Figure 2. Forcing data before and after subsetting via ForcingProcessor.</em></figcaption>
 </figure>
 
----
-
-The future of water prediction is open. **Come build it with us.**
+### The future of water prediction is open. Come build it with us.
 
 ---
 
-*The NextGen Research DataStream is developed and maintained by CIROH at the University of Alabama, with funding under award NA22NWS4320003 from the NOAA Cooperative Institute Program. Learn more at [ciroh.org](https://ciroh.org/).*
+*The NextGen Research DataStream is developed and maintained by CIROH at the University of Alabama, with funding under award NA22NWS4320003 from the NOAA Cooperative Institute Program. Learn more at [ciroh.ua.edu](https://ciroh.ua.edu/).*
