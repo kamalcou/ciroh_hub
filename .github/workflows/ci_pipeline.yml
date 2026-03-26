@@ -22,9 +22,6 @@ jobs:
       matrix:
         node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-  
-    # Temporarily disabling composite staging deployment due to a race condition.
-    if: ${{ !(github.event.client_payload.deploy_env == 'staging') }}
 
     steps:
     - name: Extract payload inputs
@@ -44,7 +41,7 @@ jobs:
         fi
     
     - name: Generate base URL
-      if: ${{ !(env.ENVIRONMENT == 'staging-legacy') }}
+      if: ${{ !(env.DEPLOY_ENV == 'staging-legacy') }}
       run: |
         if ${{ env.TARGET_PATH != '.' }}; then
           echo "BASE_URL=/${{ env.TARGET_PATH }}" >> $GITHUB_ENV
@@ -53,7 +50,7 @@ jobs:
         fi
     
     - name: Generate base URL (Legacy staging)
-      if: ${{ env.ENVIRONMENT == 'staging-legacy' }}
+      if: ${{ env.DEPLOY_ENV == 'staging-legacy' }}
       run: echo "BASE_URL=/ciroh_hub_staging/" >> $GITHUB_ENV
 
     - name: Checkout
@@ -147,4 +144,4 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         event-type: build-completed
-        client-payload: '{"env": "${{ env.DEPLOY_ENV }}", "version": "${{ env.VERSION }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "short_hash": "${{ steps.short-sha.outputs.SHORT_SHA }}", "commit_hash": "${{ github.sha }}", "commit_header": "${{ env.COMMIT_HEADER }}", "branch": "${{ github.ref_name }}", "pr_number": "${{ env.PR_NUMBER }}", "target_description": "/${{ env.TARGET_PATH }} @ ${{ env.TARGET_REPO }}"}'
+        client-payload: '{"deploy_env": "${{ env.DEPLOY_ENV }}", "version": "${{ env.VERSION }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "short_hash": "${{ steps.short-sha.outputs.SHORT_SHA }}", "commit_hash": "${{ github.sha }}", "commit_header": "${{ env.COMMIT_HEADER }}", "branch": "${{ github.ref_name }}", "pr_number": "${{ env.PR_NUMBER }}", "target_description": "/${{ env.TARGET_PATH }} @ ${{ env.TARGET_REPO }}"}'

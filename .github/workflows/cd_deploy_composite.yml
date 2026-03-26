@@ -11,12 +11,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ !(github.event.client_payload.env == 'staging-legacy') }}
+    if: ${{ !(github.event.client_payload.deploy_env == 'staging-legacy') }}
     outputs:
       environment: ${{ steps.set-outputs.outputs.environment }}
       version: ${{ steps.set-outputs.outputs.version }}
       
-    name: ${{ github.event.client_payload.env }} - Deploy ${{ github.event.client_payload.short_hash }} from ${{ github.event.client_payload.branch }}
+    name: ${{ github.event.client_payload.deploy_env }} - Deploy ${{ github.event.client_payload.short_hash }} from ${{ github.event.client_payload.branch }}
     steps:
       # Mostly for the sake of the deploy action, which assumes a git directory is present
       - name: Checkout
@@ -27,14 +27,14 @@ jobs:
       # Get environment, version, etc from dispatch payload
       - name: Fetch inputs from dispatch
         run: |
-          echo "ENVIRONMENT=${{ github.event.client_payload.env }}" >> $GITHUB_ENV
+          echo "DEPLOY_ENV=${{ github.event.client_payload.deploy_env }}" >> $GITHUB_ENV
           echo "VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
 
           echo "TARGET_REPO=${{ github.event.client_payload.target_repo }}" >> $GITHUB_ENV
           echo "TARGET_PATH=${{ github.event.client_payload.target_path }}" >> $GITHUB_ENV
           echo "PR_NUMBER=${{ github.event.client_payload.pr_number }}" >> $GITHUB_ENV
 
-          echo "environment=${{ github.event.client_payload.env }}" >> $GITHUB_OUTPUT
+          echo "environment=${{ github.event.client_payload.deploy_env }}" >> $GITHUB_OUTPUT
           echo "version=${{ github.event.client_payload.version }}" >> $GITHUB_OUTPUT
 
       - name: Echo inputs from dispatch
@@ -43,7 +43,7 @@ jobs:
           echo "Commit header: ${{ github.event.client_payload.commit_header }}"
           echo "Branch: ${{ github.event.client_payload.branch }}"
           echo "Deploying version: ${{ github.event.client_payload.version }}"
-          echo "Environment: ${{ github.event.client_payload.env }}"
+          echo "Environment: ${{ github.event.client_payload.deploy_env }}"
           echo "Deploy target: /${{ env.TARGET_PATH }} @ ${{ env.TARGET_REPO }}"
           
       # https://github.com/marketplace/actions/download-workflow-artifact
@@ -51,7 +51,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2.26.1
         with:
           workflow: ci_pipeline.yml
-          name: build-${{ env.ENVIRONMENT }}${{ env.PR_NUMBER }}
+          name: build-${{ env.DEPLOY_ENV }}${{ env.PR_NUMBER }}
           path: ./build/
 
       - name: Deploy to composite repository
@@ -61,22 +61,22 @@ jobs:
           ssh-key: ${{ secrets.SSH_DEPLOY_HUB_SUBDOMAIN }}
           repository-name: ${{ env.TARGET_REPO }}
           target-folder: ${{ env.TARGET_PATH }}
-          clean: $ENVIRONMENT == 'production' # Set to false if deploying to a composite repository's root!
+          clean: $DEPLOY_ENV == 'production' # Set to false if deploying to a composite repository's root!
           git-config-name: "github-actions"
           git-config-email: "github-actions@github.com"
 
       - name: Post-deployment notification
         run: |
-          if [[ "${{ env.ENVIRONMENT }}" == "production" ]]; then
+          if [[ "${{ env.DEPLOY_ENV }}" == "production" ]]; then
             echo "### Production build artifact uploaded! 🚀" >> $GITHUB_STEP_SUMMARY
-          elif [[ "${{ env.ENVIRONMENT }}" == "pr-staging" ]]; then
+          elif [[ "${{ env.DEPLOY_ENV }}" == "pr-staging" ]]; then
             echo "### Staging build artifact uploaded for PR #${{ env.PR_NUMBER }}! 🚀" >> $GITHUB_STEP_SUMMARY
           else
             echo "### Staging build artifact uploaded! 🚀" >> $GITHUB_STEP_SUMMARY
             echo "To deploy to production, manually trigger the 'CI: Trigger staging deployment from main' workflow." >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Environment**: $ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: $DEPLOY_ENV" >> $GITHUB_STEP_SUMMARY
           echo "- **Version**: ${{ env.VERSION }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deploy Target**: ${{ env.TARGET_PATH }} @ ${{ env.TARGET_REPO }}" >> $GITHUB_STEP_SUMMARY
           echo "- **URL (once live)**: https://hub.ciroh.org${{ env.BASE_URL }}" >> $GITHUB_STEP_SUMMARY

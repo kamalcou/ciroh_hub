@@ -14,12 +14,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || !(github.event.client_payload.env == 'pr-staging' || github.event.client_payload.env == 'staging') }} # staging-legacy is what we want
+    if: ${{ github.event_name == 'workflow_dispatch' || !(github.event.client_payload.deploy_env == 'pr-staging' || github.event.client_payload.deploy_env == 'staging') }} # staging-legacy is what we want
     outputs:
       environment: ${{ steps.set-outputs.outputs.environment }}
       version: ${{ steps.set-outputs.outputs.version }}
       
-    name: ${{ github.event.client_payload.env }} - Deploy ${{ github.event.client_payload.short_hash }} from ${{ github.event.client_payload.branch }}
+    name: ${{ github.event.client_payload.deploy_env }} - Deploy ${{ github.event.client_payload.short_hash }} from ${{ github.event.client_payload.branch }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -34,10 +34,10 @@ jobs:
           echo "Deploying commit ${{ github.event.client_payload.commit_hash }}"
           echo "Commit message: ${{ github.event.client_payload.commit_message }}"
           echo "Branch: ${{ github.event.client_payload.branch }}"
-          echo "DEPLOY_ENV=${{ github.event.client_payload.env }}" >> $GITHUB_ENV
+          echo "DEPLOY_ENV=${{ github.event.client_payload.deploy_env }}" >> $GITHUB_ENV
           echo "VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
           echo "Deploying version: ${{ github.event.client_payload.version }}"
-          echo "Environment: ${{ github.event.client_payload.env }}"
+          echo "Environment: ${{ github.event.client_payload.deploy_env }}"
           
       # https://github.com/marketplace/actions/download-workflow-artifact
       - name: Download a Build Artifact
@@ -51,11 +51,11 @@ jobs:
         id: set-outputs
         run: |
           if [[ "$DEPLOY_ENV" == "production" ]]; then
-            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+            echo "DEPLOY_ENV=production" >> $GITHUB_ENV
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "Deploying to PRODUCTION environment (current repo)"
           else
-            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+            echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
             echo "environment=staging" >> $GITHUB_OUTPUT
             echo "TARGET_REPO=CIROH-UA/ciroh_hub_staging" >> $GITHUB_ENV
             echo "Deploying to STAGING environment"
@@ -65,7 +65,7 @@ jobs:
       # Staging: Deploy to target repo (keep existing behavior)
       - name: GitHub Pages deployment to staging
         uses: JamesIves/github-pages-deploy-action@v4.6.1
-        if: ${{ env.ENVIRONMENT == 'staging-legacy' }}
+        if: ${{ env.DEPLOY_ENV == 'staging-legacy' }}
         with:
           token: ${{ secrets.GH_STAGING_TOKEN }}
           branch: main
@@ -74,14 +74,14 @@ jobs:
 
       # Production: Upload pages artifact for deployment in current repo
       - name: Upload pages artifact for production
-        if: ${{ env.ENVIRONMENT == 'production' }}
+        if: ${{ env.DEPLOY_ENV == 'production' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: build
 
       - name: Post-deployment notification
         run: |
-          if [[ "${{ env.ENVIRONMENT }}" == "production" ]]; then
+          if [[ "${{ env.DEPLOY_ENV }}" == "production" ]]; then
             echo "### Production build artifact uploaded! 🚀" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "Production build artifact uploaded. Deployment to GitHub Pages will complete in the next job." >> $GITHUB_STEP_SUMMARY
