@@ -71,4 +71,4 @@ jobs:
       if: ${{ env.DEPLOY_ENV == 'staging' }}
       with:
         event-type: create-build
-        client-payload: '{"deploy_env": "${{ env.DEPLOY_ENV }}", "source_ref": "${{ env.SOURCE_REF }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "commit_header": "${{ env.COMMIT_HEADER }}", "type_description": "staging-legacy"}'
+        client-payload: '{"deploy_env": "staging-legacy", "source_ref": "${{ env.SOURCE_REF }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "commit_header": "${{ env.COMMIT_HEADER }}", "type_description": "staging-legacy"}'
