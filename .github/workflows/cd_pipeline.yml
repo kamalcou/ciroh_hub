@@ -14,7 +14,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.env != 'pr-staging' }} # Unsupported
+    if: ${{ github.event_name == 'workflow_dispatch' && (github.event.client_payload.env == 'pr-staging' || github.event.client_payload.env == 'staging') }} # staging-legacy is what we want
     outputs:
       environment: ${{ steps.set-outputs.outputs.environment }}
       version: ${{ steps.set-outputs.outputs.version }}
