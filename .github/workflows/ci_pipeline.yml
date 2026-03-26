@@ -37,12 +37,17 @@ jobs:
         fi
     
     - name: Generate base URL
+      if: ${{ !(env.ENVIRONMENT == 'staging-legacy') }}
       run: |
         if ${{ env.TARGET_PATH != '.' }}; then
           echo "BASE_URL=/${{ env.TARGET_PATH }}" >> $GITHUB_ENV
         else
           echo "BASE_URL=/" >> $GITHUB_ENV
         fi
+    
+    - name: Generate base URL (Legacy staging)
+      if: ${{ env.ENVIRONMENT == 'staging-legacy' }}
+      run: echo "BASE_URL=/ciroh_hub_staging/" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v5
