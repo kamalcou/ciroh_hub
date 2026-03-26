@@ -13,7 +13,7 @@ on:
       
 concurrency:
   group: "making-build-artifact"
-  cancel-in-progress: ${{ github.event.client_payload.env == 'production' }}
+  cancel-in-progress: ${{ github.event.client_payload.deploy_env == 'production' }}
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
   
     # Temporarily disabling composite staging deployment due to a race condition.
-    if: ${{ !(github.event.client_payload.env == 'staging') }}
+    if: ${{ !(github.event.client_payload.deploy_env == 'staging') }}
 
     steps:
     - name: Extract payload inputs
