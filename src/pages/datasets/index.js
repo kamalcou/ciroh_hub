@@ -9,6 +9,9 @@ import Header from "@site/src/components/Header";
 import { useColorMode } from '@docusaurus/theme-common';
 import StatsBar from "@site/src/components/StatsBar";
 import { getResourceStats } from "@site/src/utils/resourceStats";
+import featuredDatasets from "./featuredDatasets";
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import CardCarouselHydroshareFeatured from "@site/src/components/CardCarouselHydroshareFeatured";
 
 const items = [
   {
@@ -37,6 +40,7 @@ export default function DatasetsPage() {
 function DatasetsPageContent({ contributeUrl, docsUrl }) {
   const { colorMode } = useColorMode();
   const isDarkTheme = colorMode === 'dark';
+  const defaultImage = "https://ciroh-portal-static-data.s3.us-east-1.amazonaws.com/dataset_placeholder.png";
 
   const [datasets, setDatasets] = useState([]);
   const [statsLoading, setStatsLoading] = useState(true);
@@ -47,6 +51,9 @@ function DatasetsPageContent({ contributeUrl, docsUrl }) {
   }, []);
 
   const stats = useMemo(() => getResourceStats(datasets), [datasets]);
+
+  const { siteConfig } = useDocusaurusContext();
+  const featuredResourcesCollectionId = siteConfig.customFields.hs_featured_datasets_collection_id;
 
   return (
     <>
@@ -79,9 +86,20 @@ function DatasetsPageContent({ contributeUrl, docsUrl }) {
       />
 
       <main className="tw-relative tw-z-20">
+        {/* Curated Resources Carousel */}
+        <div className="tw-bg-white dark:tw-bg-[#060010]">
+          <CardCarouselHydroshareFeatured
+            header="Featured Datasets"
+            collectionId={featuredResourcesCollectionId}
+            defaultImage={defaultImage}
+            overrides={featuredDatasets}
+            cardsPerView={1}
+          />
+        </div>
+
         <HydroShareResourcesSelector
           keyword="ciroh_portal_data,ciroh_hub_data"
-          defaultImage="https://ciroh-portal-static-data.s3.us-east-1.amazonaws.com/dataset_placeholder.png"
+          defaultImage={defaultImage}
           variant="modern"
           onResultsChange={onResultsChange}
         />
