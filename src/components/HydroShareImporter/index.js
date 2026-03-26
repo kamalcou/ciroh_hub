@@ -513,7 +513,7 @@ async function fetchResourcesFromCollection(collectionId) {
   // Fetch the collection metadata to extract its contained resource ids
   const collectionMetadataUrl = `https://www.hydroshare.org/hsapi/resource/${collectionId}/scimeta/`;
   const collectionMetadataResponse = await fetch(collectionMetadataUrl);
-  
+
   // Error occurred
   if (!collectionMetadataResponse.ok) {
     throw new Error(`Error fetching collection metadata for ${collectionId} (status: ${collectionMetadataResponse.status})`);
@@ -524,9 +524,13 @@ async function fetchResourcesFromCollection(collectionId) {
   const xmlParser = new XMLParser();
   const collectionMetadata = xmlParser.parse(collectionMetadataText);
 
-  // Extract each resource id from the collection metadata
+  // Get the relations as an array (handle both single relation and multiple relations cases)
+  const relations = collectionMetadata['rdf:RDF']['hsterms:CollectionResource']['dc:relation'];
+  const relationsList = Array.isArray(relations) ? relations : [relations];
+
+  // Extract each resource id from the collection relations
   const resourceIds = [];
-  for (const relation of collectionMetadata['rdf:RDF']['hsterms:CollectionResource']['dc:relation'])
+  for (const relation of relationsList)
   {
     // Extract resource id
     const hasPartText = relation['rdf:Description']['dcterms:hasPart']
