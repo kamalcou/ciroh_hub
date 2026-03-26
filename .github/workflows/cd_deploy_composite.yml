@@ -52,7 +52,7 @@ jobs:
         with:
           workflow: ci_pipeline.yml
           name: build-${{ env.DEPLOY_ENV }}${{ env.PR_NUMBER }}
-          path: ./build-${{ env.DEPLOY_ENV }}/
+          path: ./build/
 
       - name: Deploy to composite repository
         uses: JamesIves/github-pages-deploy-action@v4

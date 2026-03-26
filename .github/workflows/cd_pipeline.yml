@@ -45,7 +45,7 @@ jobs:
         with:
           workflow: ci_pipeline.yml
           name: build-${{ env.DEPLOY_ENV }}
-          path: ./build-${{ env.DEPLOY_ENV }}/
+          path: ./build/
 
       - name: Set deployment target
         id: set-outputs
