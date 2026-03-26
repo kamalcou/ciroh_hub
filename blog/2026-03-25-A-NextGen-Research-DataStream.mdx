@@ -19,19 +19,22 @@ To enable this process to be done rapidly and smoothly, the entire system is des
 The NRDS is an automated numerical prediction system generating regular stream flow forecasts that uses the NextGen Water Resources Modeling Framework (NextGen) as the core modeling engine and NextGen In A Box (NGIAB) as the simulation environment. This system generates forecasts across the contiguous United States (CONUS) on CIROH's operational cyberinfrastructure backbone: the research-to-operations (R2O) Hybrid Cloud (R2OHC) platform, with deployment on the AWS cloud. What makes the NRDS exciting is that the entire system is open-sourced, reproducible, publicly browsable, and potentially editable by anyone in the hydrologic community.
 
 
-
 ## Why the NRDS Matters
 
-For decades, operational hydrologic modeling has been a largely closed process. National-scale models like the National Water Model (NWM) are developed and maintained by federal agencies where HPC access is limited. While new ideas and approaches are published frequently, the simulations themselves have proven difficult to reproduce and improve upon from within the hydrologic research community, hindering the knowledge flow from research to operations. By contrast, the NRDS is totally public and open. This provides both researchers and national agencies with immediate access, reducing the latency between the discovery of new and potentially valuable knowledge and its operational implementation.
+For decades, operational hydrologic modeling has been a largely closed process. National-scale models like the National Water Model (NWM) are developed and maintained by federal agencies where HPC access is limited. While these models frequently produce insights and forecasts of excellent quality, the simulations themselves have proven difficult to reproduce and improve upon from within the hydrologic research community, hindering the knowledge flow from research to operations. By contrast, the NRDS is totally public and open. This provides both researchers and national agencies with immediate access, reducing the latency between the discovery of new and potentially valuable knowledge and its operational implementation.
 
 Deployed on AWS cloud from the [ngen-datastream repository](https://github.com/CIROH-UA/ngen-datastream), the NRDS regularly ingests meteorological forcing data, processes it through the NextGen framework using community-configured parameters, and produces streamflow predictions for river reaches across the country. The forcing data, model configuration, infrastructure, and simulation outputs are all publicly available through the [NRDS S3 data portal](https://datastream.ciroh.org/index.html) and the [NRDS visualizer](http://nrds.ciroh.org/). Researchers can browse the results, compare them against observations, and reproduce or run their own simulations with the exact tooling that supports the NRDS. This transparency and usability enables researchers to readily propose improvements to any component of the NRDS system stack.
 
 This is a fundamentally new paradigm for how national-scale water prediction can work: an open, iterative, community-driven feedback loop where regional expertise flows directly into an operational-like system.
 
-<img
-  src={useBaseUrl('/img/blog/2026-03-nrds/architecture.png')}
-  alt="Overview diagram of NRDS architecture"
-/>
+
+<figure style={{ textAlign: "center" }}>
+  <img
+    src={useBaseUrl('/img/blog/2026-03-nrds/architecture.png')}
+    alt="Figure 1. An overview diagram of the NRDS architecture. NWM data from the NOAA is used as a forcing source, which is converted into catchment-averaged forcing files by the Forcing Processor. Meanwhile, DattreamCLI draws from the Community Hydrofabric and community parameters to generate BMI configurations. Together, these are used to execute a model run in NextGen in a Box, the outputs of which are stored in an AWS S3 bucket for browsing via datastream.ciroh.org."
+  />
+  <figcaption><em>Figure 1. An overview diagram of the NRDS architecture.</em></figcaption>
+</figure>
 
 ## How the Community Can Contribute
 
@@ -67,7 +70,6 @@ There is also ongoing work to make the NRDS outputs more accessible and useful t
 
 With NRDS ecosystem quickly reaching maturity, now is the time for hydrologic researchers to put their research ideas to the test and deploy them in this operational-like environment. 
 
-
 ## Get Involved
 
 The NextGen Research DataStream represents a new kind of infrastructure for water science: one that is as much a social and organizational innovation as it is a technical one. By making national-scale hydrologic simulations open, reproducible, and community-editable, the NRDS creates the conditions for a distributed network of research hydrologists to incrementally improve the accuracy and reliability of streamflow predictions across the country.
@@ -82,24 +84,24 @@ Here's how to get started:
 - Join the conversation: Participate in [GitHub Discussions](https://github.com/CIROH-UA/ngen-datastream/discussions) to connect with the community
 - Read the documentation: Visit the [CIROH Hub NRDS page](https://hub.ciroh.org/docs/products/research-datastream/) for comprehensive documentation on the NRDS system and broader ecosystem.
 - Try out NRDS tools: Clone the various NRDS repositories to experiment with the NRDS workflow.
-  - [DataStreamCLI](https://github.com/CIROH-UA/datastreamcli) *(Figure 1)*: the on-server workflow tool used in NRDS simulations. This tool offers the ability to reproduce NRDS simulations, with a modular design for integrating research configurations and processing components.
-  - [ForcingProcessor](https://github.com/CIROH-UA/forcingprocessor/) *(Figure 2)*: a scalable tool for processing NWM operational data files into NextGen inputs. This tool provides the processing to generate NRDS forcings. 
+  - [DataStreamCLI](https://github.com/CIROH-UA/datastreamcli) *(Figure 2)*: the on-server workflow tool used in NRDS simulations. This tool offers the ability to reproduce NRDS simulations, with a modular design for integrating research configurations and processing components.
+  - [ForcingProcessor](https://github.com/CIROH-UA/forcingprocessor/) *(Figure 3)*: a scalable tool for processing NWM operational data files into NextGen inputs. This tool provides the processing to generate NRDS forcings. 
 
 
 <figure style={{ textAlign: "center" }}>
   <img
     src={useBaseUrl('/img/blog/2026-03-nrds/datastreamcli.jpg')}
-    alt="Figure 1. The DataStreamCLI workflow. From left to right: 'LynkerSpatial Hydrofabric via hfsubset', 'National Water Model Forcings processing', 'NextGen and BMI config file generation', 'File and directory validation', 'NextGen in a Box', 'Data file hashing and metadata', 'Evaluation by TEEHR'."
+    alt="Figure 2. The DataStreamCLI workflow. From left to right: 'LynkerSpatial Hydrofabric via hfsubset', 'National Water Model Forcings processing', 'NextGen and BMI config file generation', 'File and directory validation', 'NextGen in a Box', 'Data file hashing and metadata', 'Evaluation by TEEHR'."
   />
-  <figcaption><em>Figure 1. The DataStreamCLI workflow.</em></figcaption>
+  <figcaption><em>Figure 2. The DataStreamCLI workflow.</em></figcaption>
 </figure>
 
 <figure style={{ textAlign: "center" }}>
   <img
     src={useBaseUrl('/img/blog/2026-03-nrds/T2D_2_TMP_2maboveground_cali.gif')}
-    alt="Figure 2. An animated gif depicting forcing data before and after subsetting via ForcingProcessor. On the right, the processed data visibly matches the NWM original, but is neatly cut out to match the boundaries of the NGEN run."
+    alt="Figure 3. An animated gif depicting forcing data before and after subsetting via ForcingProcessor. On the right, the processed data visibly matches the NWM original, but is neatly cut out to match the boundaries of the NGEN run."
   />
-  <figcaption><em>Figure 2. Forcing data before and after subsetting via ForcingProcessor.</em></figcaption>
+  <figcaption><em>Figure 3. Forcing data before and after subsetting via ForcingProcessor.</em></figcaption>
 </figure>
 
 ### The future of water prediction is open. Come build it with us.
