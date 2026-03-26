@@ -31,7 +31,7 @@ jobs:
       
     - name: Validate payload inputs
       run: |
-        if ![["$DEPLOY_ENV" = "production"] || ["$DEPLOY_ENV" = "staging"]] || ["$DEPLOY_ENV" = "pr-staging"]; then
+        if ![["$DEPLOY_ENV" = "production"] || ["$DEPLOY_ENV" = "staging"]] || ["$DEPLOY_ENV" = "pr-staging"] || ["$DEPLOY_ENV" = "staging-legacy"]; then
           echo "Invalid DEPLOY_ENV value '$DEPLOY_ENV'. Expected 'production', 'staging', or 'pr-staging'."
           exit 1
         fi
@@ -39,11 +39,10 @@ jobs:
     - name: Generate base URL
       run: |
         if ${{ env.TARGET_PATH != '.' }}; then
-          echo "BASE_URL=${{ vars.BASE_URL_PREFIX }}/${{ env.TARGET_PATH }}" >> $GITHUB_ENV
+          echo "BASE_URL=/${{ env.TARGET_PATH }}" >> $GITHUB_ENV
         else
-          echo "BASE_URL=${{ vars.BASE_URL_PREFIX }}/" >> $GITHUB_ENV
+          echo "BASE_URL=/" >> $GITHUB_ENV
         fi
-      # BASE_URL_PREFIX is purely to allow testing on forks; it should be left empty on the main branch
 
     - name: Checkout
       uses: actions/checkout@v5
