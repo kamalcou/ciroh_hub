@@ -462,6 +462,10 @@ a.button.button--secondary:hover {
   display: block; /* Show dark image in dark mode */
 }
 
+[data-theme="dark"] .dark-mode-white-bg {
+  background-color: whitesmoke; /* Hide dark image in light mode */
+}
+
 /* Quick fix for KaTeX double-rendering */
 .katex-html {
   display: none;
