@@ -11,6 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ !(github.event.client_payload.env == 'staging-legacy') }}
     outputs:
       environment: ${{ steps.set-outputs.outputs.environment }}
       version: ${{ steps.set-outputs.outputs.version }}

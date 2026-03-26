@@ -65,7 +65,7 @@ jobs:
       # Staging: Deploy to target repo (keep existing behavior)
       - name: GitHub Pages deployment to staging
         uses: JamesIves/github-pages-deploy-action@v4.6.1
-        if: ${{ env.ENVIRONMENT == 'staging' }}
+        if: ${{ env.ENVIRONMENT == 'staging-legacy' }}
         with:
           token: ${{ secrets.GH_STAGING_TOKEN }}
           branch: main
