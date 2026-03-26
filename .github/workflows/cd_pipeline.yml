@@ -51,11 +51,9 @@ jobs:
         id: set-outputs
         run: |
           if [[ "$DEPLOY_ENV" == "production" ]]; then
-            echo "DEPLOY_ENV=production" >> $GITHUB_ENV
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "Deploying to PRODUCTION environment (current repo)"
           else
-            echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
             echo "environment=staging" >> $GITHUB_OUTPUT
             echo "TARGET_REPO=CIROH-UA/ciroh_hub_staging" >> $GITHUB_ENV
             echo "Deploying to STAGING environment"
