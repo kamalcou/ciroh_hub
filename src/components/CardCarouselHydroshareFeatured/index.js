@@ -104,7 +104,7 @@ export default function CardCarouselHydroshareFeatured({ collectionId, header, d
                     })
                 );
 
-                // Override resource attributes with hardcoded values from curatedDatasets.js if they exist
+                // Override resource attributes with hardcoded values
                 for (const resource of resourcesMapped)
                 {
                     const resourceOverrides = resourceOverridesMap[resource.resource_id];
