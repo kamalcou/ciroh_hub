@@ -102,6 +102,7 @@ const config = {
     hs_featured_datasets_collection_id: process.env.HS_FEATURED_DATASETS_COLLECTION_ID || "dummy",
     hs_featured_courses_collection_id: process.env.HS_FEATURED_COURSES_COLLECTION_ID || "dummy",
     hs_featured_presentations_collection_id: process.env.HS_FEATURED_PRESENTATIONS_COLLECTION_ID || "dummy",
+    hs_featured_notebooks_collection_id: process.env.HS_FEATURED_NOTEBOOKS_COLLECTION_ID || "dummy",
 
     // URL for submitting a new product request (used in ProductCards component)
     productIssueUrl: "https://github.com/CIROH-UA/ciroh_hub/issues/new?template=product-request.md",
