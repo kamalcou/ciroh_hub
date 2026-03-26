@@ -100,6 +100,7 @@ const config = {
     hs_logout_redirect: "https://portal.ciroh.org/contribute",
     hs_featured_apps_collection_id: process.env.HS_FEATURED_APPS_COLLECTION_ID || "dummy",
     hs_featured_datasets_collection_id: process.env.HS_FEATURED_DATASETS_COLLECTION_ID || "dummy",
+    hs_featured_courses_collection_id: process.env.HS_FEATURED_COURSES_COLLECTION_ID || "dummy",
 
     // URL for submitting a new product request (used in ProductCards component)
     productIssueUrl: "https://github.com/CIROH-UA/ciroh_hub/issues/new?template=product-request.md",
