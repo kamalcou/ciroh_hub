@@ -10,11 +10,10 @@ run-name: 'Create build artifact for ${{github.event.client_payload.type_descrip
 on:
   repository_dispatch:
     types: [create-build]
-    cancel-in-progress: ${{ github.event.client_payload.env == 'production' }}
       
 concurrency:
   group: "making-build-artifact"
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event.client_payload.env == 'production' }}
 
 jobs:
   build:
