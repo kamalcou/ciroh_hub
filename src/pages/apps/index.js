@@ -12,7 +12,7 @@ import HydroShareLogo from '@site/static/img/logos/hydroshare-white.png';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useColorMode } from '@docusaurus/theme-common';
 import CardCarouselHydroshareFeatured from "@site/src/components/CardCarouselHydroshareFeatured";
-import curatedApps from "./curatedApps";
+import featuredApps from "./featuredApps";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const items = [
@@ -101,13 +101,13 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
             <h2 className="tw-flex">Explore real-world Tethys apps built by the CIROH community at the <a href="https://tethys.ciroh.org/apps/">CIROH Tethys Portal</a></h2>
         </div>
 
-        {/* Curated Apps Carousel */}
+        {/* Featured Apps Carousel */}
         <div className="tw-bg-white dark:tw-bg-[#060010]">
           <CardCarouselHydroshareFeatured
             header="Featured Apps"
             collectionId={featuredAppsCollectionId}
             defaultImage={defaultImage}
-            overrides={curatedApps}
+            overrides={featuredApps}
             cardsPerView={1}
           />
         </div>

@@ -86,7 +86,7 @@ function DatasetsPageContent({ contributeUrl, docsUrl }) {
       />
 
       <main className="tw-relative tw-z-20">
-        {/* Curated Resources Carousel */}
+        {/* Featured Resources Carousel */}
         <div className="tw-bg-white dark:tw-bg-[#060010]">
           <CardCarouselHydroshareFeatured
             header="Featured Datasets"
