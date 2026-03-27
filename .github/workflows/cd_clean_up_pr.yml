@@ -4,7 +4,7 @@ run-name: 'Clean up PR #${{github.event.pull_request.number}} from composite tar
 on:
   pull_request_target:
     branches: [main]
-    types: [closed]
+    types: [closed, labeled]
 
 env:
   TARGET_REPO: ${{ vars.COMPOSITE_TARGET_REPO }}
@@ -18,12 +18,12 @@ concurrency:
 jobs:
   pr-clean-up:
     runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'labeled' || github.event.label.name == 'manual-cleanup' }}
     steps:
       - name: Checkout staging repository
         uses: actions/checkout@v5
         with:
           repository: ${{ env.TARGET_REPO }}
-          fetch-depth: 0
           ssh-key: ${{ secrets.SSH_DEPLOY_NGIAB_SUBDOMAIN }}
 
       - name: Remove PR folder from staging repository
