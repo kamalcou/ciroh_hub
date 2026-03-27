@@ -64,7 +64,7 @@ jobs:
       with:
         message: |
           **Staging Preview:**
-          🚀 https://docs.ciroh.org/staging/${{ github.event.number }}
+          🚀 https://hub.ciroh.org/staging/${{ github.event.number }}
           _Will be live within ~10 minutes of this message_
             
           _Built from commit ${{ github.sha }}_
