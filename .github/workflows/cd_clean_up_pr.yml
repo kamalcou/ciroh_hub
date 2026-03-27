@@ -18,7 +18,7 @@ concurrency:
 jobs:
   pr-clean-up:
     runs-on: ubuntu-latest
-    if: ${{ github.event.action != 'labeled' || github.event.label.name == 'manual-cleanup' }}
+    if: ${{ github.event.action != 'labeled' || github.event.label.name == 'manual cleanup' }}
     steps:
       - name: Checkout staging repository
         uses: actions/checkout@v5
