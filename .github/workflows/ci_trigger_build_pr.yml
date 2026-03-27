@@ -25,21 +25,20 @@ jobs:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'preview on staging') && ( github.event.action != 'labeled' || github.event.label.name == 'preview on staging' ) }}
     runs-on: ubuntu-latest
     steps:
-    - name: 'Set deployment target'
-      run: echo "DEPLOY_ENV=pr-staging" >> $GITHUB_ENV
-
     - name: Set deployment target
       run: |
         echo "DEPLOY_ENV=pr-staging" >> $GITHUB_ENV
         echo "TARGET_REPO=$STAGING_REPO" >> $GITHUB_ENV
         echo "TARGET_PATH=${{ env.STAGING_PATH }}${{ github.event.number }}/" >> $GITHUB_ENV
         echo "Deploying to $STAGING_REPO as STAGING at path $STAGING_PATH${{ github.event.number }}/"
+        echo "SOURCE_REPO=${{ github.event.pull_request.head.repo.full_name }}" >> $GITHUB_ENV
         echo "SOURCE_REF=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
 
     # Checkout to fetch commit header
     - name: Checkout
       uses: actions/checkout@v5
       with:
+        repository: ${{ env.SOURCE_REPO }}
         ref: ${{ env.SOURCE_REF }}
         filter: 'blob:none' # only retrieve metadata
       
