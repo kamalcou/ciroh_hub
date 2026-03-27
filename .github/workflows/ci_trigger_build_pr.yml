@@ -52,7 +52,7 @@ jobs:
       uses: peter-evans/repository-dispatch@v4
       with:
         event-type: create-build
-        client-payload: '{"deploy_env": "${{ env.DEPLOY_ENV }}", "source_ref": "${{ env.SOURCE_REF }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "commit_header": "${{ env.COMMIT_HEADER }}", "pr_number": "${{ github.event.number }}", "type_description": "PR #${{ github.event.number }} staging"}'
+        client-payload: '{"deploy_env": "${{ env.DEPLOY_ENV }}", "source_ref": "${{ env.SOURCE_REF }}", "source_repo": "${{ env.SOURCE_REPO }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "commit_header": "${{ env.COMMIT_HEADER }}", "pr_number": "${{ github.event.number }}", "type_description": "PR #${{ github.event.number }} staging"}'
 
   notify:
     if: ${{ vars.SILENCE_COMPOSITE_PR_MESSAGE != 'true' && github.event.action == 'labeled' && github.event.label.name == 'preview on staging' }}

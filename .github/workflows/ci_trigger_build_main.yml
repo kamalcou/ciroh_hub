@@ -44,6 +44,7 @@ jobs:
           echo "Deploying to $STAGING_REPO as STAGING at path $STAGING_PATH$STAGING_MAIN_FOLDER"
         fi
         echo "SOURCE_REF=${{ github.ref }}" >> $GITHUB_ENV
+        echo "SOURCE_REPO=${{ github.repository }}" >> $GITHUB_ENV
         echo "COMMIT_HEADER=${{ github.event.client_payload.commit_header }}" >> $GITHUB_ENV
 
     # Checkout to fetch commit header
@@ -63,4 +64,4 @@ jobs:
       uses: peter-evans/repository-dispatch@v4
       with:
         event-type: create-build
-        client-payload: '{"deploy_env": "${{ env.DEPLOY_ENV }}", "source_ref": "${{ env.SOURCE_REF }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "commit_header": "${{ env.COMMIT_HEADER }}", "type_description": "${{ env.DEPLOY_ENV }}"}'
+        client-payload: '{"deploy_env": "${{ env.DEPLOY_ENV }}", "source_ref": "${{ env.SOURCE_REF }}", "source_repo": "${{ env.SOURCE_REPO }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "commit_header": "${{ env.COMMIT_HEADER }}", "type_description": "${{ env.DEPLOY_ENV }}"}'
