@@ -1,7 +1,6 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-# Will soon be renamed to ci_build_artifact.yml.
 # Trigger logic has been spun out into the various 'ci_trigger_*.yml' workflows.
 
 name: 'CI: Create Build Artifact'
@@ -35,23 +34,18 @@ jobs:
       
     - name: Validate payload inputs
       run: |
-        if ![["$DEPLOY_ENV" = "production"] || ["$DEPLOY_ENV" = "staging"]] || ["$DEPLOY_ENV" = "pr-staging"] || ["$DEPLOY_ENV" = "staging-legacy"]; then
+        if ![["$DEPLOY_ENV" = "production"] || ["$DEPLOY_ENV" = "staging"] || ["$DEPLOY_ENV" = "pr-staging"]]; then
           echo "Invalid DEPLOY_ENV value '$DEPLOY_ENV'. Expected 'production', 'staging', or 'pr-staging'."
           exit 1
         fi
     
     - name: Generate base URL
-      if: ${{ !(env.DEPLOY_ENV == 'staging-legacy') }}
       run: |
         if ${{ env.TARGET_PATH != '.' }}; then
           echo "BASE_URL=/${{ env.TARGET_PATH }}" >> $GITHUB_ENV
         else
           echo "BASE_URL=/" >> $GITHUB_ENV
         fi
-    
-    - name: Generate base URL (Legacy staging)
-      if: ${{ env.DEPLOY_ENV == 'staging-legacy' }}
-      run: echo "BASE_URL=/ciroh_hub_staging/" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v5
