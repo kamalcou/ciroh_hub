@@ -145,10 +145,8 @@ export default function CardCarouselHydroshareFeatured({ collectionId, header, d
                 return;
             }
 
-            // Update the carousel cards state with the fetched cards, or use the placeholder if no cards were fetched.
-            setCarouselCards(
-                fetchedCards.length > 0 ? fetchedCards : [resourceFeaturedPlaceholder]
-            );
+            // Update the carousel cards state with the fetched cards.
+            setCarouselCards(fetchedCards);
         }
 
         // Call the async fetch function
@@ -160,12 +158,14 @@ export default function CardCarouselHydroshareFeatured({ collectionId, header, d
     }, [featuredResourcesCollectionId]);
 
     // Render the CardCarouselGeneric component with the fetched cards and the custom render function for resource cards.
-    return (
+    return carouselCards.length > 0 ? (
         <CardCarouselGeneric
         header={header || ''}
         cards={carouselCards}
         renderCard={renderCuratedResourceCard}
         cardsPerView={cardsPerView || 1}
         />
+    ) : (
+        null
     )
 }
