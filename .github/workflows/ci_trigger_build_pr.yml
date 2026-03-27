@@ -17,12 +17,12 @@ jobs:
 #    steps:
 #    - name: 'Echo conditions'
 #      run: |
-#        echo "Has flag: ${{ contains(github.event.pull_request.labels.*.name, 'Preview on staging') }}"
+#        echo "Has flag: ${{ contains(github.event.pull_request.labels.*.name, 'preview on staging') }}"
 #        echo "Is a labelling action: ${{ github.event.action == 'labeled' }}"
-#        echo "Is applying flag: ${{ github.event.label.name == 'Preview on staging' }}"
+#        echo "Is applying flag: ${{ github.event.label.name == 'preview on staging' }}"
 
   trigger-build:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'Preview on staging') && ( github.event.action != 'labeled' || github.event.label.name == 'Preview on staging' ) }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'preview on staging') && ( github.event.action != 'labeled' || github.event.label.name == 'preview on staging' ) }}
     runs-on: ubuntu-latest
     steps:
     - name: 'Set deployment target'
@@ -56,7 +56,7 @@ jobs:
         client-payload: '{"deploy_env": "${{ env.DEPLOY_ENV }}", "source_ref": "${{ env.SOURCE_REF }}", "target_repo": "${{ env.TARGET_REPO }}", "target_path": "${{ env.TARGET_PATH }}", "commit_header": "${{ env.COMMIT_HEADER }}", "pr_number": "${{ github.event.number }}", "type_description": "PR #${{ github.event.number }} staging"}'
 
   notify:
-    if: ${{ vars.SILENCE_COMPOSITE_PR_MESSAGE != 'true' && github.event.action == 'labeled' && github.event.label.name == 'Preview on staging' }}
+    if: ${{ vars.SILENCE_COMPOSITE_PR_MESSAGE != 'true' && github.event.action == 'labeled' && github.event.label.name == 'preview on staging' }}
     runs-on: ubuntu-latest
     needs: trigger-build
     steps:
