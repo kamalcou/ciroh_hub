@@ -4,6 +4,7 @@ import { FaGraduationCap } from 'react-icons/fa';
 import { IoTvOutline } from 'react-icons/io5';
 import { LuLayers3 } from 'react-icons/lu';
 import { HiOutlineGlobeAlt, HiOutlineUserGroup } from 'react-icons/hi';
+import styles from './styles.module.css';
 
 function isPlaceholder(resource) {
     return typeof resource?.resource_id === 'string' && resource.resource_id.startsWith('placeholder-');
@@ -189,7 +190,7 @@ export function ResourceCard({ resource, defaultImage }) {
                     </div>
                 ) : (
                     description && (
-                        <p className="tw-text-sm tw-leading-relaxed tw-text-slate-600 dark:tw-text-slate-300 tw-line-clamp-6">
+                        <p className={`tw-text-sm tw-leading-relaxed tw-text-slate-600 dark:tw-text-slate-300 tw-overflow-y-auto tw-max-h-36 ${styles.scrollbar}`}>
                             {description}
                         </p>
                     )
