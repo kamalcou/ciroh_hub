@@ -31,7 +31,7 @@ const items = [
 
 export default function AppsPage() {
   const contributeUrl = useBaseUrl('/contribute?current-contribution=apps');
-  const docsUrl = useBaseUrl('/docs/products/intro');
+  const docsUrl = useBaseUrl('/contribute/develop');
   const defaultImage = 'https://ciroh-portal-static-data.s3.us-east-1.amazonaws.com/app_placeholder.png'
 
   return (
@@ -72,7 +72,7 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
             tagline="Enhance forecasting, analysis, and water resource management by making your web applications and tools accessible to CIROH and NOAA&apos;s hydrologic research initiatives."
             buttons={[
                 { label: "Add your Apps", href: contributeUrl, primary: true },
-                { label: "Browse Documentation", href: docsUrl }
+                { label: "Build with Tethys", href: docsUrl }
               ]}
         />
       </div>
@@ -92,6 +92,11 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
       />
 
       <main className="tw-relative tw-z-20">
+        {/* Link to tethys.ciroh.org */}
+        <div className="tw-flex tw-w-full tw-h-full tw-pt-10 tw-justify-center tw-items-center tw-bg-white dark:tw-bg-[#060010]">
+            <h2 className="tw-flex">Explore real-world Tethys apps built by the CIROH community at the <a href="https://tethys.ciroh.org/apps/">CIROH Tethys Portal</a></h2>
+        </div>
+
         <HydroShareResourcesSelector
           keyword="nwm_portal_app,ciroh_hub_app"
           defaultImage={defaultImage}
