@@ -24,7 +24,7 @@ Built on the same containerization patterns as NGIAB, CCNH leverages a Pangeo ba
 - **SPOTPY**(Statistical Parameter Optimization Tool for Python) for model calibration
 - **TEEHR**(Tools for Exploratory Evaluation in Hydrologic Research) for performance evaluation
 - **PyNGIAB**, a Python wrapper that lets you run NextGen simulations directly from Jupyter notebooks
-- **HydroShare integration tools** (nbfetch, hs_files-jupyter, hsclient) for seamless data exchange
+- **HydroShare integration tools** (nbfetch, hs_files-jupyter, hsclient) for seamless data exchange to save results in HydroShare for collaboration, reproducibility and publishing 
 - **JupyterLab** with distributed computing capabilities for interactive, scalable workflows
 
 <figure style={{ textAlign: "center" }}>
@@ -72,14 +72,15 @@ There are two primary ways to launch CCNH in the CIROH-2i2c JupyterHub environme
 You are now inside a CIROH 2i2c JupyterHub session running the CCNH image, which provides a fully configured NextGen modeling environment.
 
 ### Option 2: Launch from a HydroShare Resource (“Open With”)
-One of the most powerful features of CIROH-2i2c JupyterHub is its [integration with HydroShare](https://docs.ciroh.org/ciroh_hub_staging/docs/services/cloudservices/2i2c/hydroshare-integration). You can open a HydroShare resource directly in a CIROH-2i2c JupyterHub session running the CCNH image:
-1. Navigate to a HydroShare resource (for example: https://www.hydroshare.org/resource/27045581bdea4808a393330f2417379c/)  
+One of the most powerful features of CIROH-2i2c JupyterHub is its [integration with HydroShare](https://hub.ciroh.org/ciroh_hub_staging/docs/services/cloudservices/2i2c/hydroshare-integration). You can open a HydroShare resource directly in a CIROH-2i2c JupyterHub session running the CCNH image:
+1. Navigate to a HydroShare resource. (for example: https://www.hydroshare.org/resource/27045581bdea4808a393330f2417379c/)  
 2. Click **Open With**  (top-right of the resource page) and select **CIROH-2i2c JupyterHub**. 
 3. Click **“Login to continue”** and authenticate with your CIROH credentials. (If this is your first time, you may be prompted to authorize access through GitHub.) 
 4. On the **Server Options** page:
    - Select the desired compute profile (Small, Medium, Large, or Huge).
    - Select the **CIROH Community NextGen Hub** image.
 5. Click **Start** to launch the JupyterHub.
+6. (If you did this with the example resource above, click on and launch one of the Jupyter Notebooks to step through the NextGen workflows.)
 
 ## References
 - Nassar, A., Tarboton, D., Baig, F., Cunningham, J., Patel, A., Halgren, J., Lee, B., Salehabadi, H., Castronova, A., and Garousi-Nejad, I. "Accelerating community research applications of the NextGen water modeling framework through CUAHSI HydroShare linked with CIROH-2i2c JupyterHub." *Environmental Modelling & Software*. (In-review)
