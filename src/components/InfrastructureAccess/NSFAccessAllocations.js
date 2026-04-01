@@ -4,20 +4,9 @@ import InfrastructureAccessSection from './InfrastructureAccessSection';
 const NSFAccessAllocations = () => {
   const steps = [
     {
-      title: "Submit Infrastructure Request",
-      description: "The PI for your project must submit the Infrastructure Request Form below to request team-wide access to a particular resource on ACCESS Allocation.",
-      buttons: [
-        {
-          text: "Infrastructure Request Form",
-          link: "https://github.com/CIROH-UA/NGIAB-CloudInfra/issues/new?assignees=&labels=on-prem&projects=&template=onprem-request.md&title="
-        }
-      ],
-      details: "This form ensures your project is properly registered and your team has the necessary permissions."
-    },
-    {
       title: "Register for ACCESS Allocation",
       description: "If you don't already have an ACCESS Allocation account, register for one using the link below.",
-      optional: true,
+      optional: false,
       buttons: [
         {
           text: "ACCESS Allocation New User Registration",
@@ -27,15 +16,15 @@ const NSFAccessAllocations = () => {
       details: "ACCESS Allocation is required for authentication and authorization across NSF-funded resources."
     },
     {
-      title: "Submit NSF ACCESS Resources Request",
-      description: "After your project has been approved, using your ACCESS Allocation ID, submit the NSF ACCESS Resources Request form for individual user accounts.",
+      title: "Submit Infrastructure Request",
+      description: "The PI for your project must submit the Infrastructure Request Form below to request team-wide access to a particular resource on ACCESS Allocation.",
       buttons: [
         {
-          text: "NSF ACCESS Resources Request Form",
-          link: "https://forms.office.com/r/ERyKyHbdaC"
+          text: "Infrastructure Request Form",
+          link: "https://github.com/CIROH-UA/NGIAB-CloudInfra/issues/new?assignees=&labels=on-prem&projects=&template=onprem-request.md&title="
         }
       ],
-      details: "This creates your personal account on the computing platform."
+      details: "This form ensures your project is properly registered and your team has the necessary permissions."
     }
   ];
 
