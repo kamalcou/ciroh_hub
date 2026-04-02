@@ -1,9 +1,9 @@
-// Holds hardcoded overrides for featured dataset attributes.
+// Holds hardcoded overrides for featured presentation attributes.
 
 /* Example:
-    // Example Dataset
+    // Example Presentation
     '5a223cbe0eec4a10b167a9e022fd34b1': {
-        description: 'This will replace the description of the dataset with ID 5a223cbe0eec4a10b167a9e022fd34b1',
+        description: 'This will replace the description of the presentation with ID 5a223cbe0eec4a10b167a9e022fd34b1',
         thumbnail_url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
         images: [
             'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80'
@@ -12,6 +12,6 @@
     }
 */
 
-// Overrides for featured dataset attributes.
+// Overrides for featured presentation attributes.
 // Resource ID -> Attribute Overrides
-export default {}
+export const featuredPresentations = {}

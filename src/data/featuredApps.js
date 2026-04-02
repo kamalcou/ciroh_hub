@@ -14,4 +14,4 @@
 
 // Overrides for featured app attributes.
 // Resource ID -> Attribute Overrides
-export default {}
+export const featuredApps = {}
