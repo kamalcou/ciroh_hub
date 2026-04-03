@@ -104,7 +104,7 @@ const NWMBigQuery = () => {
         </div>
 
         <a
-          href="https://github.com/CIROH-UA/NGIAB-CloudInfra/issues/new?assignees=&labels=infrastructure&projects=&template=case_studies_call.md&title="
+          href="https://github.com/CIROH-UA/NGIAB-CloudInfra/issues/new?template=case_studies_call_template.yml"
           target="_blank"
           rel="noopener noreferrer"
           style={{
