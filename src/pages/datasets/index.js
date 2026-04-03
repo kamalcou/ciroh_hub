@@ -4,6 +4,8 @@ import Layout from '@theme/Layout';
 import TechBox from "@site/src/components/TechBox";
 import HydroShareResourcesSelector from "@site/src/components/HydroShareResourcesSelector";
 import HydroShareLogo from '@site/static/img/logos/hydroshare-white.png';
+import DatasetLightIcon from '@site/static/img/cards/datasets_logo_light.png';
+import DatasetDarkIcon from '@site/static/img/cards/datasets_logo_dark.png';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Header from "@site/src/components/Header";
 import { useColorMode } from '@docusaurus/theme-common';
@@ -40,7 +42,7 @@ export default function DatasetsPage() {
 function DatasetsPageContent({ contributeUrl, docsUrl }) {
   const { colorMode } = useColorMode();
   const isDarkTheme = colorMode === 'dark';
-  const defaultImage = "https://ciroh-portal-static-data.s3.us-east-1.amazonaws.com/dataset_placeholder.png";
+  const defaultImage = isDarkTheme ? DatasetDarkIcon : DatasetLightIcon;
 
   const [datasets, setDatasets] = useState([]);
   const [statsLoading, setStatsLoading] = useState(true);
