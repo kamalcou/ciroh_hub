@@ -165,10 +165,10 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                     <div className="tw-w-[2px] tw-bg-slate-200 dark:tw-bg-slate-800"></div>
 
                     {/* Details & Links Container */}
-                    <div className="tw-flex tw-flex-col tw-flex-1 tw-pt-4 tw-relative tw-rounded-xl">
+                    <div className="tw-flex tw-flex-col tw-flex-1 tw-min-h-0 tw-pt-4 tw-relative tw-rounded-xl">
             
                         {/* Title Authors Description Container */}
-                        <div className="tw-flex tw-flex-1 tw-flex-col tw-pl-4 tw-pr-4">
+                        <div className="tw-flex tw-flex-1 tw-flex-col tw-min-h-0 tw-pl-4 tw-pr-4">
                             {/* Title */}
                             { placeholder ? (
                                 <div className="tw-w-full tw-h-7 tw-rounded-md tw-mt-3 tw-bg-slate-200 dark:tw-bg-slate-800 tw-animate-pulse"></div>
@@ -210,7 +210,7 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                             { placeholder ? (
                                 <div className="tw-w-full tw-h-36 tw-rounded-md tw-bg-slate-200 dark:tw-bg-slate-800 tw-animate-pulse"></div>
                             ) : (
-                                <div className={`tw-overflow-y-auto tw-max-h-40 ${styles.curatedScrollbar}`}>
+                                <div className={`tw-flex-1 tw-min-h-0 tw-overflow-y-auto ${styles.curatedScrollbar}`}>
                                     {description && (
                                         <p className="tw-text-sm tw-leading-relaxed tw-text-slate-600 dark:tw-text-slate-300">
                                             {description}
