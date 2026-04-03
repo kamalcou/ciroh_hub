@@ -179,12 +179,13 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                                             href={pageUrl || resourceUrl}
                                             target="_blank"
                                             rel="noreferrer"
+                                            title={title}
                                             className="tw-no-underline hover:tw-text-cyan-700 dark:hover:tw-text-cyan-300"
                                         >
                                             {title}
                                         </a>
                                     ) : (
-                                        title
+                                        <div title={title}>{title}</div>
                                     )}
                                 </h3>
                             )} 

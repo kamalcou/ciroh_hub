@@ -154,12 +154,13 @@ export function ResourceCard({ resource, defaultImage }) {
                                             href={pageUrl || resourceUrl}
                                             target="_blank"
                                             rel="noreferrer"
+                                            title={title}
                                             className="tw-no-underline tw-text-black hover:tw-text-cyan-700 dark:tw-text-white dark:hover:tw-text-cyan-300"
                                         >
                                             {title}
                                         </a>
                                 ) : (
-                                    title
+                                    <div title={title}>{title}</div>
                                 )}
                             </h3>
                             </>
