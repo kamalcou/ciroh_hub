@@ -85,13 +85,13 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
     return (
         <>
             {/* Card Container */}
-            <article className="tw-flex tw-h-80 tw-rounded-xl tw-shadow-md tw-bg-slate-100 dark:tw-bg-slate-900">
+            <article className="tw-flex sm:tw-h-80 tw-rounded-xl tw-shadow-md tw-bg-slate-100 dark:tw-bg-slate-900">
 
                 {/* Content Container */}
-                <div className="tw-flex tw-flex-row tw-w-full">
+                <div className="tw-flex tw-flex-col sm:tw-flex-row tw-w-full">
 
                     {/* Image Container */}
-                    <div className="tw-relative tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-72 tw-h-full tw-rounded-xl tw-bg-slate-100 dark:tw-bg-slate-900">
+                    <div className="tw-relative tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full tw-h-48 sm:tw-w-72 sm:tw-h-full tw-rounded-xl tw-bg-slate-100 dark:tw-bg-slate-900">
                         {/* Image Background */}
                         { placeholder ? (
                             <div className="tw-relative tw-flex tw-items-center tw-justify-center tw-w-[80%] tw-h-[80%] tw-rounded-xl tw-bg-slate-200 dark:tw-bg-slate-800 tw-animate-pulse">
@@ -115,7 +115,7 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                     </div>
 
                     {/* Vertical Divider */}
-                    <div className="tw-w-[2px] tw-bg-slate-200 dark:tw-bg-slate-800"></div>
+                    <div className="tw-hidden sm:tw-block tw-w-[2px] tw-bg-slate-200 dark:tw-bg-slate-800"></div>
 
                     {/* Details & Links Container */}
                     <div className="tw-flex tw-flex-col tw-flex-1 tw-min-h-0 tw-pt-4 tw-relative tw-rounded-xl">
@@ -163,7 +163,7 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                             { placeholder ? (
                                 <div className="tw-w-full tw-h-36 tw-rounded-md tw-bg-slate-200 dark:tw-bg-slate-800 tw-animate-pulse"></div>
                             ) : (
-                                <div className={`tw-flex-1 tw-min-h-0 tw-overflow-y-auto ${styles.curatedScrollbar}`}>
+                                <div className={`tw-max-h-36 sm:tw-max-h-none tw-flex-1 tw-min-h-0 tw-overflow-y-auto ${styles.curatedScrollbar}`}>
                                     {description && (
                                         <p className="tw-text-sm tw-leading-relaxed tw-text-slate-600 dark:tw-text-slate-300">
                                             {description}
@@ -174,7 +174,7 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                         </div>
 
                         {/* Links & Resource Type Container */}
-                        <div className="tw-flex tw-justify-between tw-items-center tw-w-full tw-rounded-br-xl tw-bg-cyan-400 dark:tw-bg-slate-800 tw-px-4 tw-py-2">
+                        <div className="tw-flex tw-flex-wrap tw-justify-between tw-items-center tw-w-full tw-rounded-b-xl sm:tw-rounded-bl-none sm:tw-rounded-br-xl tw-bg-cyan-400 dark:tw-bg-slate-800 tw-px-4 tw-py-2 tw-gap-2">
                             {/* Resource Type */}
                             <div className="tw-flex tw-flex-wrap tw-gap-2 tw-justify-start">
                                 {resourceType && !placeholder && <StatTag>{resourceType}</StatTag>}
