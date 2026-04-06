@@ -4,56 +4,9 @@ import { FaGraduationCap, FaRegImage } from 'react-icons/fa';
 import { IoTvOutline } from 'react-icons/io5';
 import { HiOutlineGlobeAlt, HiOutlineUserGroup } from 'react-icons/hi';
 import styles from './styles.module.css';
+import { isPlaceholder, splitAuthors, StatTag, ActionLink, ActionButton } from '@site/src/components/HydroShareResourcesCards/shared';
 import ModalImageViewer from '@site/src/components/ModalImageViewer';
 
-
-function isPlaceholder(resource) {
-    return typeof resource?.resource_id === 'string' && resource.resource_id.startsWith('placeholder-');
-}
-
-function splitAuthors(authors) {
-    if (!authors || typeof authors !== 'string') return [];
-    return authors
-        .split('🖊')
-        .map(a => a.trim())
-        .filter(Boolean);
-}
-
-function StatTag({ children }) {
-    return (
-        <span className="tw-inline-flex tw-items-center tw-rounded-md tw-border tw-border-white/30 tw-bg-white/20 tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium tw-text-white dark:tw-border-cyan-500/20 dark:tw-bg-cyan-500/10 dark:tw-text-cyan-300">
-            {children}
-        </span>
-    );
-}
-
-function ActionLink({ href, title, children }) {
-    if (!href) return null;
-    return (
-        <a
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            title={title}
-            className="tw-inline-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-white/20 tw-bg-white/15 tw-p-2 tw-text-white hover:tw-text-cyan-300 dark:tw-border-slate-600 dark:tw-bg-slate-700/50 dark:tw-text-slate-300 dark:hover:tw-text-cyan-300 hover:tw-bg-white/25 dark:hover:tw-bg-slate-700 hover:tw-border-cyan-400 dark:hover:tw-border-cyan-500/40 tw-transition tw-shadow-sm hover:tw-shadow-md"
-        >
-            {children}
-        </a>
-    );
-}
-
-function ActionButton({ onClick, title, children }) {
-    return (
-        <button
-            type="button"
-            onClick={onClick}
-            title={title}
-            className="tw-inline-flex tw-cursor-pointer tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-white/20 tw-bg-white/15 tw-p-2 tw-text-white hover:tw-text-cyan-300 dark:tw-border-slate-600 dark:tw-bg-slate-700/50 dark:tw-text-slate-300 dark:hover:tw-text-cyan-300 hover:tw-bg-white/25 dark:hover:tw-bg-slate-700 hover:tw-border-cyan-400 dark:hover:tw-border-cyan-500/40 tw-transition tw-shadow-sm hover:tw-shadow-md"
-        >
-            {children}
-        </button>
-    );
-}
 
 export default function ResourceCardCurated({ resource, defaultImage }) {
     const placeholder = isPlaceholder(resource);
@@ -180,7 +133,7 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                                             target="_blank"
                                             rel="noreferrer"
                                             title={title}
-                                            className="tw-no-underline hover:tw-text-cyan-700 dark:hover:tw-text-cyan-300"
+                                            className="tw-no-underline tw-text-black hover:tw-text-cyan-700 dark:tw-text-white dark:hover:tw-text-cyan-300"
                                         >
                                             {title}
                                         </a>
@@ -221,7 +174,7 @@ export default function ResourceCardCurated({ resource, defaultImage }) {
                         </div>
 
                         {/* Links & Resource Type Container */}
-                        <div className="tw-flex tw-justify-between tw-items-center tw-w-full tw-rounded-br-xl tw-bg-blue-800 dark:tw-bg-slate-800 tw-px-4 tw-py-2">
+                        <div className="tw-flex tw-justify-between tw-items-center tw-w-full tw-rounded-br-xl tw-bg-cyan-400 dark:tw-bg-slate-800 tw-px-4 tw-py-2">
                             {/* Resource Type */}
                             <div className="tw-flex tw-flex-wrap tw-gap-2 tw-justify-start">
                                 {resourceType && !placeholder && <StatTag>{resourceType}</StatTag>}
