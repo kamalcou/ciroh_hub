@@ -9,8 +9,8 @@ const PublicCloud = () => {
 
   const steps = [
     {
-      title: "Requesting Project Access",
-      description: "Primary Investigators (PIs) or Workshop Leads leading CIROH projects or workshops may use this form to request cloud computing resources on AWS or Google Cloud. Access is available to all consortium members and partners.",
+      title: "Submit Unified Access Request",
+      description: "Primary Investigators (PIs) or Workshop Leads leading CIROH projects or workshops should use this single form to request AWS, Google Cloud, and/or CIROH-2i2c JupyterHub access. Access is available to all consortium members and partners.",
       buttons: [
         {
           text: "Cloud Infrastructure Request Form",
@@ -19,19 +19,20 @@ const PublicCloud = () => {
       ],
       details: (
         <>
-          <p style={{marginBottom: '0.75rem'}}>1. Submit a GitHub template request detailing your project requirements and specifications.</p>
-          <p style={{marginBottom: '0.75rem'}}>2. Our team will review your request and assist you in obtaining the necessary access.</p>
+          <p style={{marginBottom: '0.75rem'}}>1. Submit one GitHub request outlining the public cloud and/or 2i2c resources your project needs.</p>
+          <p style={{marginBottom: '0.75rem'}}>2. Indicate whether you need AWS, Google Cloud, and/or CIROH-2i2c CPU/GPU access for your team.</p>
+          <p style={{marginBottom: '0.75rem'}}>3. Our team will review the request, coordinate provisioning, and follow up if more information is needed.</p>
           <p style={{marginBottom: '0.75rem'}}>
             <strong>Reference:</strong> Please refer to{' '}
             <a 
-              href="https://github.com/CIROH-UA/NGIAB-CloudInfra/issues?q=is%3Aissue%20is%3Aclosed%20label%3Agoogle%2C%222i2c%20JupyterHub%22%2Caws%20" 
+              href="https://github.com/CIROH-UA/NGIAB-CloudInfra/issues" 
               target="_blank" 
               rel="noopener noreferrer"
               style={{color: '#06b6d4', textDecoration: 'underline'}}
             >
-              this link
+              the issue tracker
             </a>
-            {' '}for references to submitted forms.
+            {' '}for examples of previous requests.
           </p>
         </>
       )
@@ -57,7 +58,7 @@ const PublicCloud = () => {
         borderLeft: '4px solid var(--ifm-color-info)'
       }}>
         <p style={{margin: 0, color: 'var(--ifm-color-emphasis-800)'}}>
-          <strong>Note:</strong> If using CIROH-2i2c services, please see the "Accessing CIROH-2i2c JupyterHub" section below for additional steps.
+          <strong>Note:</strong> This same request process now covers CIROH-2i2c JupyterHub access, so you only need to submit one request for cloud and JupyterHub needs.
         </p>
       </div>
     </div>
