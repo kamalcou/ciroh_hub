@@ -119,7 +119,7 @@ const config = {
   // Future flags. (In preparation for Docusaurus v4.)
   future: {
     v4: true,
-    experimental_faster: true,
+    faster: true,
   },
 
   markdown: {
