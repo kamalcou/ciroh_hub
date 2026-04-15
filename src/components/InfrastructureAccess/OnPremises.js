@@ -9,7 +9,7 @@ const OnPremises = () => {
       buttons: [
         {
           text: "On-premises Infrastructure Request Form",
-          link: "https://github.com/CIROH-UA/NGIAB-CloudInfra/issues/new?assignees=&labels=on-prem&projects=&template=onprem-request.md&title="
+          link: "https://github.com/CIROH-UA/NGIAB-CloudInfra/issues/new?template=onprem-request.yml"
         }
       ],
       details: "Note: The On-Premises Infrastructure Request Form must be submitted by the PI of the project."
