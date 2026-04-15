@@ -11,6 +11,9 @@ import TethysLogWhite from '@site/static/img/logos/tethys-platform-white.png';
 import HydroShareLogo from '@site/static/img/logos/hydroshare-white.png';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useColorMode } from '@docusaurus/theme-common';
+import CardCarouselHydroshareFeatured from "@site/src/components/CardCarouselHydroshareFeatured";
+import { featuredApps } from "@site/src/data/featuredApps";
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const items = [
   {
@@ -59,6 +62,9 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
 
   const stats = useMemo(() => getResourceStats(apps), [apps]);
 
+  const { siteConfig } = useDocusaurusContext();
+  const featuredAppsCollectionId = siteConfig.customFields.hs_featured_apps_collection_id;
+
   return (
     <>
       {/* Hero */}
@@ -76,8 +82,6 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
               ]}
         />
       </div>
-
-
       </section>
 
       {/* Stats */}
@@ -94,7 +98,18 @@ function AppsPageContent({ contributeUrl, docsUrl, defaultImage }) {
       <main className="tw-relative tw-z-20">
         {/* Link to tethys.ciroh.org */}
         <div className="tw-flex tw-w-full tw-h-full tw-pt-10 tw-justify-center tw-items-center tw-bg-white dark:tw-bg-[#060010]">
-            <h2 className="tw-flex">Explore real-world Tethys apps built by the CIROH community at the <a href="https://tethys.ciroh.org/apps/">CIROH Tethys Portal</a></h2>
+            <h2>Explore real-world Tethys apps built by the CIROH community on the <a href="https://tethys.ciroh.org/apps/">CIROH Tethys Portal</a></h2>
+        </div>
+
+        {/* Featured Apps Carousel */}
+        <div className="tw-bg-white dark:tw-bg-[#060010]">
+          <CardCarouselHydroshareFeatured
+            header="Featured Apps"
+            collectionId={featuredAppsCollectionId}
+            defaultImage={defaultImage}
+            overrides={featuredApps}
+            cardsPerView={1}
+          />
         </div>
 
         <HydroShareResourcesSelector

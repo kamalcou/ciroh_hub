@@ -55,7 +55,7 @@ function DevelopContent() {
           }
           examples={
             <div>
-              Explore real-world Tethys apps built by the CIROH community at the <a href="https://tethys.ciroh.org/apps/">CIROH Tethys Portal</a>
+              Explore real-world Tethys apps built by the CIROH community on the <a href="https://tethys.ciroh.org/apps/">CIROH Tethys Portal</a>
             </div>
           }
        />
